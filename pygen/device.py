@@ -40,7 +40,7 @@ class Device(Caller):
         patch: int
         build: int
 
-    class ResultCodes(IntEnum):
+    class ResultCode(IntEnum):
         ok = 0
         ParamTooMany = 1
         NotEnoughData = 2
@@ -49,11 +49,17 @@ class Device(Caller):
         NotImplemented = 5
         UnknownError = 6
 
-    set_active_bus = Command(cmd_id=CmdId.set_active_bus, return_type=ResultCodes)
+    set_active_bus = Command(cmd_id=CmdId.set_active_bus, return_type=ResultCode)
     """Установка приоритетной шины обмена"""
 
     get_tm = Command(cmd_id=CmdId.get_tm, return_type=AttrDict)
     """Запрос ТМ сообщения"""
 
-    set_time = Command(cmd_id=CmdId.set_time, return_type=ResultCodes)
+    set_time = Command(cmd_id=CmdId.set_time, return_type=ResultCode)
     """Установка времени"""
+
+
+if __name__ == '__main__':
+    my_device = Device(0x12)
+    result = my_device.set_time(1)  # ResultCode.ok
+    active_bus = my_device.get_tm(my_device.TmId.active_bus)  # ActiveBus
