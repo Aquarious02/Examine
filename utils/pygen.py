@@ -40,6 +40,9 @@ class Caller:
         """Be careful with closing socket if there is something to receive in channel"""
         self.socket.close()
 
+    def __del__(self):
+        self.socket.close()
+
 
 class Command:
     """Descriptor for sending command to device with passing args or kwargs."""
