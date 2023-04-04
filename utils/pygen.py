@@ -41,6 +41,7 @@ class Caller:
         self.socket.close()
 
     def __del__(self):
+        self.send('closing')
         self.socket.close()
 
 
