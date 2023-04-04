@@ -20,7 +20,7 @@ class Caller:
 
     def receive(self, buffer_size=2048):
         received = self.socket.recv(buffer_size).decode()
-        if not received.endswith('\n'):
+        if received and not received.endswith('\n'):
             return received + self.receive()
         else:
             return received.replace('\n', '')
@@ -44,11 +44,15 @@ class Command:
         self.cmd_id = cmd_id
         self.return_type = return_type
 
-    def __get__(self, instance: Caller, instance_type=None):
+    def __get__(self, instance: Caller | 'Device', instance_type=None):
         def _caller(*args, **kwargs):
             # str_command = f'{self.cmd_id}:: {args};{kwargs}'
             str_command = json.dumps(dict(cmd_id=self.cmd_id, args=args, kwargs=kwargs))
-            return instance.send_and_receive(str_command)
+            result = json.loads(instance.send_and_receive(str_command))
+            result_code = result.get('ResultCode')
+            if result_code:
+                return instance.ResultCodes()
+            return result
 
         return _caller
 
