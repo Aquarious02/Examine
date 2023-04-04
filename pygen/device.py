@@ -60,6 +60,7 @@ class Device(Caller):
 
 
 if __name__ == '__main__':
+    # Run FakeDevice.exe first
     my_device = Device(0x12)
     result = my_device.set_time(1)  # ResultCode.ok
     active_bus = my_device.get_tm(my_device.TmId.active_bus)  # ActiveBus

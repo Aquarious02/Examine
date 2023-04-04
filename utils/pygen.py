@@ -4,6 +4,8 @@ from math import isclose
 
 from _pytest.python_api import ApproxBase
 
+from pygen import Device
+
 
 class Caller:
     def __init__(self, ip_address):
@@ -44,13 +46,13 @@ class Command:
         self.cmd_id = cmd_id
         self.return_type = return_type
 
-    def __get__(self, instance: Caller | 'Device', instance_type=None):
+    def __get__(self, instance: Caller | Device, instance_type=None):
         def _caller(*args, **kwargs):
             # str_command = f'{self.cmd_id}:: {args};{kwargs}'
             str_command = json.dumps(dict(cmd_id=self.cmd_id, args=args, kwargs=kwargs))
             result = json.loads(instance.send_and_receive(str_command))
             result_code = result.get('ResultCode')
-            if result_code:
+            if result_code is not None:
                 return instance.ResultCode(result_code)
             return result
 
