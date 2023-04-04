@@ -51,7 +51,7 @@ class Command:
             result = json.loads(instance.send_and_receive(str_command))
             result_code = result.get('ResultCode')
             if result_code:
-                return instance.ResultCodes()
+                return instance.ResultCode(result_code)
             return result
 
         return _caller
