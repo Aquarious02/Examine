@@ -23,7 +23,11 @@
 
 
 # Начало работы
+## Poetry
+
 В проекте используется менеджер зависимостей poetry. Подробнее [здесь](https://python-poetry.org/).
+Если Вы ничего не слышали про Poetry - ничего страшного.
+Вы можете все же настроить окружение по инструкции ниже или просто перейти к пункту requirements.txt
 Достаточно установить poetry в системный Python
 ```shell
 pip install poetry==1.2
@@ -35,6 +39,12 @@ pip install poetry==1.2
 poetry install
 ```
 И выбрать интерпретатор (`python.exe`) из только что созданного виртуального окружения
+
+## requirements.txt
+Достаточно команды 
+```shell
+pip install -r requirements.txt
+```
 
 # Вводная информация
 
