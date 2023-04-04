@@ -1,5 +1,7 @@
+"""Utils for pygen."""
 import json
 import socket
+from dataclasses import dataclass
 from math import isclose
 
 from _pytest.python_api import ApproxBase
@@ -51,13 +53,27 @@ class Command:
             # str_command = f'{self.cmd_id}:: {args};{kwargs}'
             str_command = json.dumps(dict(cmd_id=self.cmd_id, args=args, kwargs=kwargs))
             result = json.loads(instance.send_and_receive(str_command))
-            result_code = result.get('ResultCode')
-            if result_code is not None:
-                return instance.ResultCode(result_code)
-            return result
+            result = ReturnMessage(**result)
+            return result.in_instance_class(instance)
 
         return _caller
 
+
+@dataclass
+class ReturnMessage:
+    type: str
+    data: int | str | dict
+
+    def in_instance_class(self, instance: Caller | Device):
+        """convert type to Inctance.Class"""
+        return_type = getattr(instance, self.type)
+        try:
+            if isinstance(self.data, (int, str)):
+                return return_type(self.data)
+            elif isinstance(self.data, dict):
+                return return_type(**self.data)
+        except Exception as e:
+            return self
 
 class AttrDict(dict):
     """
