@@ -40,16 +40,14 @@ class Device(Caller):
         patch: int
         build: int
 
-    class ResultCodes:
-        class Ok(IntEnum):
-            ok = 0
-
-        class Error(IntEnum):
-            ParamTooMany = 0
-            NotEnoughData = 1
-            BadArg = 2
-            TmUnknown = 3
-            NotImplemented = 4
+    class ResultCodes(IntEnum):
+        ok = 0
+        ParamTooMany = 1
+        NotEnoughData = 2
+        BadArg = 3
+        TmUnknown = 4
+        NotImplemented = 5
+        UnknownError = 6
 
     set_active_bus = Command(cmd_id=CmdId.set_active_bus, return_type=ResultCodes)
     """Установка приоритетной шины обмена"""
