@@ -69,7 +69,11 @@ class ReturnMessage:
 
     def in_instance_class(self, instance: Caller | Device):
         """convert type to Inctance.Class"""
-        return_type = getattr(instance, self.type)
+        if self.type in {'int', 'str', 'float', 'list'}:
+            return eval(self.type)(self.data)
+
+        return_type = getattr(instance, self.type, None)
+
         try:
             if isinstance(self.data, (int, str)):
                 return return_type(self.data)
@@ -77,6 +81,7 @@ class ReturnMessage:
                 return return_type(**self.data)
         except Exception as e:
             return self
+
 
 class AttrDict(dict):
     """
@@ -146,3 +151,4 @@ class AttrDict(dict):
             return self.almost_equal(other_obj.__dict__)
         else:
             raise TypeError(f'You can not compare {type(other_obj)} with AttrDict')
+
