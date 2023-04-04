@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 from enum import IntEnum
 
+from loguru import logger
+
 from utils.pygen import Command, AttrDict, Caller
 
 
@@ -62,5 +64,7 @@ class Device(Caller):
 if __name__ == '__main__':
     # Run FakeDevice.exe first
     my_device = Device(0x12)
-    result = my_device.set_time(1)  # ResultCode.ok
-    active_bus = my_device.get_tm(my_device.TmId.active_bus)  # ActiveBus
+
+    logger.info(f'init_base = {my_device.get_tm(my_device.TmId.active_bus)}')
+    logger.info(my_device.set_active_bus(my_device.ActiveBus.reserve))
+    logger.info(f'actual_base = {my_device.get_tm(my_device.TmId.active_bus)}')
