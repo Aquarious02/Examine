@@ -6,7 +6,7 @@ from pygen.device import Device
 
 
 @pytest.fixture()
-def device():
+def device() -> Device:
     device_ = Device(0x12)
 
     yield device_
