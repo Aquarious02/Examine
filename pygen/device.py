@@ -16,6 +16,7 @@ class Device(Caller):
         set_serial = 0x18feb9c5c
         set_time = 0x1dc4734ff
         get_tm = 0x151db77ae
+        reset = 0xe2db1244
 
     class TmId(IntEnum):
         active_bus = 0x129a6bf7
@@ -24,6 +25,7 @@ class Device(Caller):
         version = 0x251d1696c
         serial = 0x2457c7116
         current_time = 0x6b13fac9
+        operating_time = 0x216067f17
 
     class ActiveBus(IntEnum):
         main = 0
@@ -32,8 +34,11 @@ class Device(Caller):
     @dataclass
     class OperatingTimeInfo:
         reboot_count: int
+        """Количество перезапусков"""
         operating_time: float
+        """Время работы с последнего включения"""
         total_time: float
+        """Общее время работы"""
 
     @dataclass
     class Version:
@@ -60,11 +65,15 @@ class Device(Caller):
     set_time = Command(arg_type=int | float, cmd_id=CmdId.set_time, return_type=ResultCode)
     """Установка времени"""
 
+    reset = Command(arg_type=None, cmd_id=CmdId.set_time, return_type=ResultCode)
+
 
 if __name__ == '__main__':
     # Run FakeDevice.exe first
     my_device = Device(0x12)
 
-    logger.info(f'init_base = {my_device.get_tm(my_device.TmId.active_bus)}')
-    logger.info(my_device.set_active_bus(my_device.ActiveBus.reserve))
+    init_base = my_device.get_tm(my_device.TmId.active_bus)
+    logger.info(f'{init_base = }')
+    result = my_device.set_active_bus(my_device.ActiveBus.reserve)
+    logger.info(f'Changing bus {result = }')
     logger.info(f'actual_base = {my_device.get_tm(my_device.TmId.active_bus)}')
