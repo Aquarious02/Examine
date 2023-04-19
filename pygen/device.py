@@ -51,13 +51,13 @@ class Device(Caller):
         NotImplemented = 5
         UnknownError = 6
 
-    set_active_bus = Command(cmd_id=CmdId.set_active_bus, return_type=ResultCode)
+    set_active_bus = Command(arg_type=ActiveBus, cmd_id=CmdId.set_active_bus, return_type=ResultCode)
     """Установка приоритетной шины обмена"""
 
-    get_tm = Command(cmd_id=CmdId.get_tm, return_type=AttrDict)
+    get_tm = Command(arg_type=TmId, cmd_id=CmdId.get_tm, return_type=AttrDict)
     """Запрос ТМ сообщения"""
 
-    set_time = Command(cmd_id=CmdId.set_time, return_type=ResultCode)
+    set_time = Command(arg_type=int | float, cmd_id=CmdId.set_time, return_type=ResultCode)
     """Установка времени"""
 
 

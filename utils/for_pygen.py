@@ -46,7 +46,8 @@ class Caller:
 class Command:
     """Descriptor for sending command to device with passing args or kwargs."""
 
-    def __init__(self, cmd_id: int, return_type):
+    def __init__(self, arg_type, cmd_id: int, return_type):
+        self.arg_type = arg_type  # Don't check explicitly
         self.cmd_id = cmd_id
         self.return_type = return_type
 
