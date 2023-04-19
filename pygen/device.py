@@ -65,7 +65,7 @@ class Device(Caller):
     set_time = Command(arg_type=int | float, cmd_id=CmdId.set_time, return_type=ResultCode)
     """Установка времени"""
 
-    reset = Command(arg_type=None, cmd_id=CmdId.set_time, return_type=ResultCode)
+    reset = Command(arg_type=None, cmd_id=CmdId.reset, return_type=ResultCode)
 
 
 if __name__ == '__main__':
