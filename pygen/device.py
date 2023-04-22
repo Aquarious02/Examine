@@ -55,10 +55,14 @@ class Device(Caller):
         TmUnknown = 4
         NotImplemented = 5
         UnknownError = 6
+        PermissionDenied = 7
 
     set_active_bus = Command(arg_type=ActiveBus, cmd_id=CmdId.set_active_bus, return_type=ResultCode)
     """Установка приоритетной шины обмена"""
-
+    
+    set_serial = Command(arg_type=str, cmd_id=CmdId.set_serial, return_type=ResultCode)
+    """Установка серийного номера"""
+    
     get_tm = Command(arg_type=TmId, cmd_id=CmdId.get_tm, return_type=AttrDict)
     """Запрос ТМ сообщения"""
 
