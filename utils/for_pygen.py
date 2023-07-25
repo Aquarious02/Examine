@@ -3,6 +3,7 @@ import json
 import socket
 from dataclasses import dataclass
 from math import isclose
+from typing import Callable, TypeVar
 
 from _pytest.python_api import ApproxBase
 
@@ -43,15 +44,19 @@ class Caller:
         self.socket.close()
 
 
+T = TypeVar('T')
+A = TypeVar('A')
+
+
 class Command:
     """Descriptor for sending command to device with passing args or kwargs."""
 
-    def __init__(self, arg_type, cmd_id: int, return_type):
-        self.arg_type = arg_type  # Don't check explicitly
+    def __init__(self, arg_type: A, cmd_id: int, return_type: T):
+        self.arg_type: A = arg_type  # Don't check explicitly
         self.cmd_id = cmd_id
-        self.return_type = return_type
+        self.return_type: T = return_type
 
-    def __get__(self, instance: Caller, instance_type=None):
+    def __get__(self, instance: Caller, instance_type=None) -> Callable[[A], T]:
         def _caller(*args, **kwargs):
             # str_command = f'{self.cmd_id}:: {args};{kwargs}'
             str_command = json.dumps(dict(cmd_id=self.cmd_id, args=args, kwargs=kwargs))
